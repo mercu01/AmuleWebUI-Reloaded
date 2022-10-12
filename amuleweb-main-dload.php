@@ -630,6 +630,9 @@
 					<tr>
 						<th style="color:#4db6ac">File Name</th>
 						<th style="color:#4db6ac">Username</th>
+						<th style="color:#4db6ac">Management</th>
+						<th style="color:#4db6ac">Quality</th>
+						<th style="color:#4db6ac">Avg</th>
 						<th style="color:#4db6ac">Up</th>
 						<th style="color:#4db6ac">Down</th>
 						<th style="color:#4db6ac">Speed</th>
@@ -667,7 +670,56 @@
 								</div>
 								<div class="popper-content hide">&nbsp;'. $name .'</div>';
 					}
+					function status_management($warning, $quality) {
+						$EnableBadge = '<span class="badge badge-pill btn-primary" style="font-size:9px; padding-top:3.6px;">Enable</span>';
+						$DisableBadge = '<span class="badge badge-pill btn-primary" style="font-size:9px; padding-top:3.6px;">Disabled</span>';
+						if($quality>0){
+							if ( $warning == 0 ) {
+								return $DisableBadge . '<span class="badge badge-pill btn-warning" style="font-size:9px; padding-top:3.6px;">Small queue</span>';
+							} elseif ( $warning == 1 ) {
+								return $EnableBadge . '<span class="badge badge-pill btn-primary" style="font-size:9px; padding-top:3.6px;">Soft kick</span>';
+							} elseif ( $warning == 2 ) {
+								return $EnableBadge .'<span class="badge btn-info" style="font-size:9px; padding-top:3.6px;">Hard kick</span>';
+							} elseif ( $warning == 3 ) {
+								return $DisableBadge . '<span class="badge badge-pill btn-success" style="font-size:9px; padding-top:3.6px;">Full speed > 85%</span>';
+							} elseif  ( $warning == 4 ) {
+								return $DisableBadge . '<span class="badge badge-pill btn-success" style="font-size:9px; padding-top:3.6px;">Min Slot speed > 75%</span>';
+							} elseif ( $warning == 5 ) {
+								return $DisableBadge . '<span class="badge badge-pill btn-success" style="font-size:9px; padding-top:3.6px;">Wait full slots</span>';
+							} elseif ( $warning == 6 ) {
+								return '<span class="badge badge-pill btn-success" style="font-size:9px; padding-top:3.6px;">Quality</span>';
+							} elseif ( $warning == 7 ) {
+								return $DisableBadge . '<span class="badge badge-pill btn-success" style="font-size:9px; padding-top:3.6px;">Max new clients</span>';
+							}else {
+								return '';
+							}
+						}else{
+							return '<span class="badge badge-pill btn-success" style="font-size:9px; padding-top:3.6px;">New client</span>';
+						}
+						
+					}
+					function starts($quality) {
+						if($quality>0){
+							if ($quality>90){
+								return '★★★★★';
+							}elseif ($quality>70){
+								return '★★★★☆';
+							}elseif ($quality>50){
+								return '★★★☆☆';
+							}elseif ($quality>30){
+								return '★★☆☆☆';
+							}elseif($quality>10){
+								return '★☆☆☆☆';
+							}else{
+								return '☆☆☆☆☆';
+							}
+						}else{
+							return '' . $quality;
+						}
+						
+					}
 					$countUploadDimension = 0;
+					$countSpeedStable = 0;
 					$countDownloadDimension = 0;
 					$countSpeed = 0;
 					$uploads = amule_load_vars("uploads");
@@ -678,7 +730,13 @@
 						// Name
 						echo "<td style='font-size:12px;color:#f5f5f5' class='texte texte-full-name'><b>", create_tooltip($file->name) , "</b></td>";
 						// User name
-						echo "<td style='font-size:12px;color:#f5f5f5' class='texte'>", $file->user_name, "</td>";
+						echo "<td style='font-size:12px;color:#f5f5f5;width: 15%;max-width: 0;' class='texte'><div style='overflow: hidden;white-space: nowrap;text-overflow: ellipsis;word-break: break-all;word-wrap: break-word'>", create_tooltip($file->user_name) , "</div></td>";
+						// warnings
+						echo "<td style='font-size:12px;color:#f5f5f5;padding-top: 8px;' class='texte'>", status_management($file->warnings, $file->xfer_up_quality), "</td>";
+						// Quality client
+						echo "<td style='font-size:20px;color:#f5f5f5;padding-top:1px;padding-bottom:0; filter: brightness(",((($file->xfer_up_quality)/2)+50),"%);' class='texte'>", ($file->xfer_up_quality > 0) ? starts($file->xfer_up_quality) : "", "</td>";
+						// Speed stable
+						echo "<td style='font-size:12px;color:#f5f5f5' class='texte'>", ($file->xfer_speed_stable > 0) ? (CastToXBytes($file->xfer_speed_stable, $countSpeedStable) . "/s") : "", "</td>";
 						// Upload dimension
 						echo "<td style='font-size:12px;color:#f5f5f5' class='texte'>", CastToXBytes($file->xfer_up, $countUploadDimension), "</td>";
 						// Download dimension
@@ -689,7 +747,10 @@
 					if (count($uploads)>0) {
 						echo "<tr>";
 						echo "<td style='padding-bottom:0;'></td>";
+						echo "<td style='padding-bottom:0;'></td>";
+						echo "<td style='padding-bottom:0;'></td>";
 						echo "<td style='font-size:12px;color:#c9c9c9;padding-bottom:0;text-align: right;padding-right: 20px;'>Total</td>";
+						echo "<td style='font-size:12px;color:#c9c9c9;padding-bottom:0;'>", CastToXBytes($countSpeedStable, $fakevar) . "/s", "</td>";
 						echo "<td style='font-size:12px;color:#c9c9c9;padding-bottom:0;'>", CastToXBytes($countUploadDimension, $fakevar), "</td>";
 						echo "<td style='font-size:12px;color:#c9c9c9;padding-bottom:0;'>", CastToXBytes($countDownloadDimension, $fakevar), "</td>";
 						echo "<td style='font-size:12px;color:#c9c9c9;padding-bottom:0;'>", CastToXBytes($countSpeed, $fakevar) . "/s", "</td>";
