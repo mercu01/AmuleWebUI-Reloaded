@@ -169,8 +169,15 @@
         "new_files_auto_dl_prio", "new_files_auto_ul_prio"
       );
       $conn_opts = array("max_line_up_cap","max_up_limit",
-        "max_line_down_cap","max_down_limit", "slot_alloc",
-        "tcp_port","udp_dis","max_file_src","max_conn_total","autoconn_en");
+			"max_line_down_cap","max_down_limit", "slot_alloc", 
+			"tcp_port","udp_dis","max_file_src","max_conn_total","autoconn_en", 
+      "EC_TAG_CONN_START_HOUR_ALT_RATE",
+      "EC_TAG_CONN_START_MINUTE_ALT_RATE",
+      "EC_TAG_CONN_END_HOUR_ALT_RATE",
+      "EC_TAG_CONN_END_MINUTE_ALT_RATE",
+      "EC_TAG_CONN_MAX_UL_ALT_RATE",
+      "EC_TAG_CONN_MAX_DL_ALT_RATE",
+      "EC_TAG_CONN_SLOT_ALLOCATION_ALT_RATE");
       $webserver_opts = array("use_gzip", "autorefresh_time");
 
       $all_opts;
@@ -236,7 +243,14 @@
       "slot_alloc", "max_conn_total",
       "tcp_port", "udp_port",
       "min_free_space",
-      "autorefresh_time"
+      "autorefresh_time",
+      "EC_TAG_CONN_START_HOUR_ALT_RATE",
+      "EC_TAG_CONN_START_MINUTE_ALT_RATE",
+      "EC_TAG_CONN_END_HOUR_ALT_RATE",
+      "EC_TAG_CONN_END_MINUTE_ALT_RATE",
+      "EC_TAG_CONN_MAX_UL_ALT_RATE",
+      "EC_TAG_CONN_MAX_DL_ALT_RATE",
+      "EC_TAG_CONN_SLOT_ALLOCATION_ALT_RATE"
       )
     for(i = 0; i < str_param_names.length; i++) {
       frm[str_param_names[i]].value = initvals[str_param_names[i]];
@@ -428,6 +442,79 @@
                 style=" border-top-left-radius:0px;
                         border-bottom-left-radius:0px;
                         width: 100px" name="slot_alloc">
+          </div></p>
+          <p><b style="font-size:16px; width:550px;background-color:#319a9b;color:cfd8dc" class="form-control">ALTERNATIVE RATE LIMIT</b>
+
+          <div class="btn-group form-inline">
+            <label class="form-control btn-group"
+              style=" width:431px;
+          background-color:#ffffff;
+                        color:319a9b;
+                      border-top-right-radius: 0px;
+                      border-bottom-right-radius: 0px;" onclick="javascript:focusName('EC_TAG_CONN_START_HOUR_ALT_RATE')">
+                <input type="checkbox" class="btn btn-default" name="nothing" disabled>&nbsp;&nbsp;
+                Start hh:mm
+              </label>
+              <input  class="btn-group form-control" style="width: 60px;border-radius: 0;" name="EC_TAG_CONN_START_HOUR_ALT_RATE" id="EC_TAG_CONN_START_HOUR_ALT_RATE6" type="number" pattern="^[0-9]"  min="0" max="23" step="1" name="num">
+              <input  class="btn-group form-control" style="width: 60px;border-radius: 0;" name="EC_TAG_CONN_START_MINUTE_ALT_RATE" id="EC_TAG_CONN_START_MINUTE_ALT_RATE6" type="number" pattern="^[0-9]"  min="0" max="59" step="1" name="num">
+          </div>
+          <div class="btn-group form-inline">
+            <label class="form-control btn-group"
+              style=" width:431px;
+          background-color:#ffffff;
+                        color:319a9b;
+                      border-top-right-radius: 0px;
+                      border-bottom-right-radius: 0px;" onclick="javascript:focusName('EC_TAG_CONN_END_HOUR_ALT_RATE')">
+                <input type="checkbox" class="btn btn-default" name="nothing" disabled>&nbsp;&nbsp;
+                End hh:mm
+              </label>
+              <input  class="btn-group form-control" style="width: 60px;border-radius: 0;" name="EC_TAG_CONN_END_HOUR_ALT_RATE" id="EC_TAG_CONN_END_HOUR_ALT_RATE6" type="number" pattern="^[0-9]"  min="0" max="23" step="1" name="num">
+              <input  class="btn-group form-control" style="width: 60px;border-radius: 0;" name="EC_TAG_CONN_END_MINUTE_ALT_RATE" id="EC_TAG_CONN_END_MINUTE_ALT_RATE6" type="number" pattern="^[0-9]"  min="0" max="59" step="1" name="num">
+          </div>
+          <div class="btn-group form-inline">
+            <label class="form-control btn-group"
+              style=" width:450px;
+                       background-color:#ffffff;
+                        color:319a9b;
+                      border-top-right-radius: 0px;
+                      border-bottom-right-radius: 0px;" onclick="javascript:focusName('EC_TAG_CONN_MAX_DL_ALT_RATE')">
+                <input type="checkbox" class="btn btn-default" name="nothing" disabled>&nbsp;&nbsp;
+                Max download rate
+              </label>
+              <input type="text" class="btn-group form-control"
+                style=" border-top-left-radius:0px;
+                        border-bottom-left-radius:0px;
+                        width: 100px" name="EC_TAG_CONN_MAX_DL_ALT_RATE" size="4">
+          </div>
+          <div class="btn-group form-inline">
+            <label class="form-control btn-group"
+              style=" width:450px;
+                       background-color:#ffffff;
+                        color:319a9b;
+                      border-top-right-radius: 0px;
+                      border-bottom-right-radius: 0px;" onclick="javascript:focusName('EC_TAG_CONN_MAX_UL_ALT_RATE')">
+                <input type="checkbox" class="btn btn-default" name="nothing" disabled>&nbsp;&nbsp;
+                Max upload rate
+              </label>
+              <input type="text" class="btn-group form-control"
+                style=" border-top-left-radius:0px;
+                        border-bottom-left-radius:0px;
+                        width: 100px" name="EC_TAG_CONN_MAX_UL_ALT_RATE" size="4">
+          </div>
+          <div class="btn-group form-inline">
+            <label class="form-control btn-group"
+              style=" width:450px;
+                      background-color:#ffffff;
+                        color:319a9b;
+                      border-top-right-radius: 0px;
+                      border-bottom-right-radius: 0px;" onclick="javascript:focusName('EC_TAG_CONN_SLOT_ALLOCATION_ALT_RATE')">
+                <input type="checkbox" class="btn btn-default" name="nothing" disabled>&nbsp;&nbsp;
+                Slot Allocation
+              </label>
+              <input type="text" class="btn-group form-control"
+                style=" border-top-left-radius:0px;
+                        border-bottom-left-radius:0px;
+                        width: 100px" name="EC_TAG_CONN_SLOT_ALLOCATION_ALT_RATE" size="4">
           </div></p>
 
           <p><b style="font-size:16px; width:550px;background-color:#319a9b;color:cfd8dc" class="form-control">CONNECTION SETTINGS</b>
